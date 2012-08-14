@@ -13,7 +13,7 @@ Contents
 Instructions( When using Salesforce Ant)
 -----------------------------------------
 1. Get the package
-2. Modify the build.properties file to point to your salesforce instance
+2. Modify the build.properties file to point to your salesforce instance (Username, password, Server url)
 3. run 'ant deployUnpackaged'
 4. You can run the included Flow to see how Flow can use the Account Industry picklist field values and the Lead Status picklist field values
 
