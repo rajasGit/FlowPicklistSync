@@ -1,0 +1,19 @@
+<project name="Flow FlowPicklistSync" basedir="." xmlns:sf="antlib:com.salesforce">
+
+<property file="build.properties"/>
+<target name="retrieveUnpackaged"> 
+  <mkdir dir="FlowPicklistSync"/>
+  <sf:retrieve username="${sf.username}" 
+      password="${sf.password}" 
+      serverurl="${sf.serverurl}" 
+      retrieveTarget="FlowPicklistSync" 
+      unpackaged="FlowPicklistSync/package.xml"/>
+</target>
+<target name="deployUnpackaged">
+  <mkdir dir="FlowPicklistSync"/>
+  <sf:deploy username="${sf.username}" 
+      password="${sf.password}" 
+      serverurl="${sf.serverurl}" 
+      deployroot="FlowPicklistSync"/>
+</target>
+</project>

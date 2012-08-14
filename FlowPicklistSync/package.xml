@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Package xmlns="http://soap.sforce.com/2006/04/metadata">
+    <types>
+        <members>ManagePicklistsForFlow</members>
+        <name>ApexClass</name>
+    </types>
+    <types>
+        <members>PicklistForFlow__c</members>
+        <name>CustomObject</name>
+    </types>
+    <types>
+        <members>Picklist_Choice_Sample-1</members>
+        <name>Flow</name>
+    </types>
+    <version>25.0</version>
+</Package>
