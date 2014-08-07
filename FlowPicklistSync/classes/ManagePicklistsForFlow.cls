@@ -13,6 +13,16 @@ global Class ManagePicklistsForFlow implements Process.Plugin {
         return new Process.PluginResult(result); 
 
     }
+  
+  private void deleteValuesFromTable(String objectName, String fieldName) {
+    List<PicklistForFlow__c> plList =
+      [select Id
+       from PicklistForFlow__c
+       where ObjectName__c = :objectName
+       and PicklistFieldName__c = :fieldName];
+    
+    delete plList;
+  }
 
 
     private void ManagePicklist(String ObjectAPIName, String FieldAPIName) {
@@ -21,15 +31,32 @@ global Class ManagePicklistsForFlow implements Process.Plugin {
     Schema.DescribeSOBjectResult sotDesc = sot.getDescribe();
     Schema.DescribeFieldResult F = sotDesc.fields.getMap().get(FieldAPIName).getDescribe();
     List<Schema.PicklistEntry> P = F.getPicklistValues();
-
+    Set<String> fieldValues = new Set<String>();
+    Map<String, PicklistForFlow__c> flowMap;
+    List<PicklistForFlow__c> toInsert = new List<PicklistForFlow__c>();
+    
+    for (PicklistEntry aPickListval : P) {
+      fieldValues.add(aPickListval.getValue());
+    }
+    
+    deleteValuesFromTable(ObjectAPIName, FieldAPIName);
     
 
     for (PicklistEntry aPickListval: P) {
-        PicklistForFlow__c[] fpv = [select Name from PicklistForFlow__c where ObjectName__c = :ObjectAPIName and PicklistFieldName__c = :FieldAPIName and PickListValue__c = :aPickListval.getValue()];
+        /*PicklistForFlow__c[] fpv = [select Name from PicklistForFlow__c where ObjectName__c = :ObjectAPIName and PicklistFieldName__c = :FieldAPIName and PickListValue__c = :aPickListval.getValue()];
         if (fpv.size() == 0 ) {
             PicklistForFlow__c newFpv = new PicklistForFlow__c(ObjectName__c = ObjectAPIName, PickListValue__c = aPickListval.getValue(), PicklistFieldName__c =FieldAPIName, PickListLabel__c =aPickListval.getLabel()  );
             Database.insert(newFpv);
-        }
+        }*/
+        toInsert.add(new PicklistForFlow__c(
+          ObjectName__c = ObjectAPIName,
+          PickListValue__c = aPickListval.getValue(),
+          PicklistFieldName__c = FieldAPIName,
+          PickListLabel__c = aPickListval.getLabel()));
+    }
+    
+    if (!toInsert.isEmpty()) {
+      insert toInsert;
     }
     
     }
